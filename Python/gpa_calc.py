@@ -101,9 +101,29 @@ score_table = {
     "1": (0.000, (0.000, 0.000, 0.000)),
 }
 
-grades = (("97", "U"), ("97", "U")) # In each nested tuple, (grade, [H, CP, AP, U])
+grades = (("97", "H"), ("97", "H")) # In each nested tuple, (grade, [H, CP, AP, U])
+weighted = True
 
-for completed_class in grades:
-    (grade, class_type) = completed_class
-    if class_type == "U":
-        print(score_table[grade][0])
+def grades_to_scores(grades, weighted):
+    all_gpas = []
+    for completed_class in grades:
+        (grade, class_type) = completed_class
+        if weighted == True:
+            if class_type == "CP":
+                all_gpas.append(score_table[grade][1][0])
+            if class_type == "H":
+                all_gpas.append(score_table[grade][1][1])
+            if class_type == "AP":
+                all_gpas.append(score_table[grade][1][2])
+        else:
+            all_gpas.append(score_table[grade][0])
+    return all_gpas
+
+def average(list):
+    return sum(list) / len(list)
+
+def main(grades, weighted = True):
+    print(f"Your average GPA is: {average(grades_to_scores(grades, weighted)):.3f}")
+
+if __name__ == '__main__':
+    main(grades, weighted)
